@@ -1,21 +1,71 @@
 template <typename T>
-void ArrayList<T>::bubbleSort() {
-    // TODO
+void ArrayList<T>::bubbleSort()
+{
+    int n = this->length;
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - 1 - i; j++)
+        {
+            numComps++;
+            if (buffer[j] > buffer[j + 1])
+            {
+                swap(j, j + 1);
+                numSwaps++;
+            }
+        }
+    }
 }
 
 template <typename T>
-void ArrayList<T>::insertionSort() {
-    // TODO
+void ArrayList<T>::insertionSort()
+{
+    int n = this->length;
+    for (int i = 1; i < n; i++)
+    {
+        int j = i;
+        while (j > 0)
+        {
+            numComps++;
+            if (buffer[j] < buffer[j - 1])
+            {
+                swap(j, j - 1);
+                numSwaps++;
+                j--;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 }
 
 template <typename T>
-void ArrayList<T>::selectionSort() {
-    // TODO
+void ArrayList<T>::selectionSort()
+{
+    int n = this->length;
+    for (int i = 0; i < n - 1; i++)
+    {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++)
+        {
+            numComps++;
+            if (buffer[j] < buffer[minIdx])
+            {
+                minIdx = j;
+            }
+        }
+        if (minIdx != i)
+        {
+            swap(i, minIdx);
+            numSwaps++;
+        }
+    }
 }
 
 /*******************************************************************************
  * No need to modify methods below :)
-*******************************************************************************/
+ *******************************************************************************/
 
 template <typename T>
 unsigned ArrayList<T>::numComps = 0;
@@ -25,16 +75,19 @@ unsigned ArrayList<T>::numSwaps = 0;
 
 template <typename T>
 ArrayList<T>::ArrayList(int i)
-: buffer(new T[i]), maxSize(i) { }
+    : buffer(new T[i]), maxSize(i) {}
 
 template <typename T>
-ArrayList<T>::ArrayList(const ArrayList<T>& copyObj) {
+ArrayList<T>::ArrayList(const ArrayList<T> &copyObj)
+{
     copy(copyObj);
 }
 
 template <typename T>
-ArrayList<T>& ArrayList<T>::operator=(const ArrayList<T>& rightObj) {
-    if (this != &rightObj) {
+ArrayList<T> &ArrayList<T>::operator=(const ArrayList<T> &rightObj)
+{
+    if (this != &rightObj)
+    {
         clear();
         copy(rightObj);
     }
@@ -42,17 +95,21 @@ ArrayList<T>& ArrayList<T>::operator=(const ArrayList<T>& rightObj) {
 }
 
 template <typename T>
-ArrayList<T>::~ArrayList() {
+ArrayList<T>::~ArrayList()
+{
     clear();
 }
 
 template <typename T>
-void ArrayList<T>::append(const T& elem) {
-    if (isFull()) {
+void ArrayList<T>::append(const T &elem)
+{
+    if (isFull())
+    {
         throw string("append: error, list is full");
     }
 
-    if (buffer == nullptr) {
+    if (buffer == nullptr)
+    {
         buffer = new T[maxSize];
     }
 
@@ -61,26 +118,31 @@ void ArrayList<T>::append(const T& elem) {
 }
 
 template <typename T>
-void ArrayList<T>::clear() {
+void ArrayList<T>::clear()
+{
     delete[] buffer;
-    buffer       = nullptr;
+    buffer = nullptr;
     this->length = 0;
 }
 
 template <typename T>
-void ArrayList<T>::copy(const ArrayList<T>& copyObj) {
+void ArrayList<T>::copy(const ArrayList<T> &copyObj)
+{
     this->length = copyObj.length;
-    maxSize      = copyObj.maxSize;
-    buffer       = new T[maxSize];
+    maxSize = copyObj.maxSize;
+    buffer = new T[maxSize];
 
-    for (int i = 0; i < this->length; i++) {
+    for (int i = 0; i < this->length; i++)
+    {
         buffer[i] = copyObj.buffer[i];
     }
 }
 
 template <typename T>
-T ArrayList<T>::getElement(int position) const {
-    if (position < 0 || position >= this->length) {
+T ArrayList<T>::getElement(int position) const
+{
+    if (position < 0 || position >= this->length)
+    {
         throw string("getElement: error, position out of bounds");
     }
 
@@ -88,106 +150,131 @@ T ArrayList<T>::getElement(int position) const {
 }
 
 template <typename T>
-int ArrayList<T>::getLength() const {
+int ArrayList<T>::getLength() const
+{
     return this->length;
 }
 
 template <typename T>
-int ArrayList<T>::getMaxSize() const {
+int ArrayList<T>::getMaxSize() const
+{
     return maxSize;
 }
 
 template <typename T>
-unsigned ArrayList<T>::getNumComps() {
+unsigned ArrayList<T>::getNumComps()
+{
     return numComps;
 }
 
 template <typename T>
-unsigned ArrayList<T>::getNumSwaps() {
+unsigned ArrayList<T>::getNumSwaps()
+{
     return numSwaps;
 }
 
 template <typename T>
-void ArrayList<T>::insert(int position, const T& elem) {
-    if (position < 0 || position >= this->length) {
+void ArrayList<T>::insert(int position, const T &elem)
+{
+    if (position < 0 || position >= this->length)
+    {
         throw string("insert: error, position out of bounds");
     }
-    
-    if (isFull()) {
+
+    if (isFull())
+    {
         throw string("insert: error, list is full");
     }
-    
-    for (int i = this->length; i > position; i--) {
+
+    for (int i = this->length; i > position; i--)
+    {
         buffer[i] = buffer[i - 1];
     }
-    
+
     buffer[position] = elem;
     this->length++;
 }
 
 template <typename T>
-bool ArrayList<T>::isEmpty() const {
+bool ArrayList<T>::isEmpty() const
+{
     return this->length == 0;
 }
 
 template <typename T>
-bool ArrayList<T>::isFull() const {
+bool ArrayList<T>::isFull() const
+{
     return this->length == maxSize;
 }
 
 template <typename T>
-void ArrayList<T>::remove(int position) {
-    if (position < 0 || position >= this->length) {
+void ArrayList<T>::remove(int position)
+{
+    if (position < 0 || position >= this->length)
+    {
         throw string("remove: error, position out of bounds");
     }
 
-    for (int i = position; i < this->length - 1; i++) {
+    for (int i = position; i < this->length - 1; i++)
+    {
         buffer[i] = buffer[i + 1];
     }
     this->length--;
 }
 
 template <typename T>
-void ArrayList<T>::replace(int position, const T& elem) {
-    if (position < 0 || position >= this->length) {
+void ArrayList<T>::replace(int position, const T &elem)
+{
+    if (position < 0 || position >= this->length)
+    {
         throw string("replace: error, position out of bounds");
     }
-    
+
     buffer[position] = elem;
 }
 
 template <typename T>
-void ArrayList<T>::sort(int algo) {
+void ArrayList<T>::sort(int algo)
+{
     numComps = numSwaps = 0;
 
-    if (algo == 1) {
+    if (algo == 1)
+    {
         bubbleSort();
     }
-    else if (algo == 2) {
+    else if (algo == 2)
+    {
         selectionSort();
     }
-    else if (algo == 3) {
+    else if (algo == 3)
+    {
         insertionSort();
     }
-    else {
+    else
+    {
         throw string("sort: error, undefined algorithm chosen");
     }
 }
 
 template <typename T>
-void ArrayList<T>::swap(int i, int j) {
-    T temp    = buffer[i];
+void ArrayList<T>::swap(int i, int j)
+{
+    T temp = buffer[i];
     buffer[i] = buffer[j];
     buffer[j] = temp;
 }
 
 template <typename T>
-ostream& operator<<(ostream& outStream, const ArrayList<T>& myObj) {
-    if (myObj.isEmpty()) {
+ostream &operator<<(ostream &outStream, const ArrayList<T> &myObj)
+{
+    if (myObj.isEmpty())
+    {
         outStream << "List is empty, no elements to display.\n";
     }
-    else {
-        for (int i = 0; i < myObj.length; i++) {
+    else
+    {
+        for (int i = 0; i < myObj.length; i++)
+        {
             outStream << myObj.buffer[i] << ' ';
         }
         outStream << endl;
